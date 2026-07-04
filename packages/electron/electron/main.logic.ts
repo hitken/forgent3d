@@ -61,6 +61,22 @@ function createMainLogicTools({ state, deps }) {
           writeAgentTextFile(path.join(projectPath, rule.relativePath), rule.content, force);
         }
         break;
+      case 'hermes':
+        writeIfChanged(path.join(projectPath, '.mcp.json'), deps.claudeMcpJson(deps.MCP_PORT));
+        writeAgentTextFile(path.join(projectPath, 'HERMES.md'), deps.hermesMdTemplate(), force);
+        const hermesSkills = deps.getAgentSkills('Hermes');
+        for (const rule of hermesSkills) {
+          writeAgentTextFile(path.join(projectPath, rule.relativePath), rule.content, force);
+        }
+        break;
+      case 'openclaw':
+        writeIfChanged(path.join(projectPath, '.mcp.json'), deps.claudeMcpJson(deps.MCP_PORT));
+        writeAgentTextFile(path.join(projectPath, 'OPENCLAW.md'), deps.openclawMdTemplate(), force);
+        const openclawSkills = deps.getAgentSkills('OpenClaw');
+        for (const rule of openclawSkills) {
+          writeAgentTextFile(path.join(projectPath, rule.relativePath), rule.content, force);
+        }
+        break;
       default:
         throw new Error(`Unknown agent: ${agent}`);
     }
@@ -68,11 +84,11 @@ function createMainLogicTools({ state, deps }) {
 
   function refreshAgentWorkspace(projectPath) {
     if (!projectPath) throw new Error('Open a project first.');
-    for (const agent of ['codex', 'claude', 'cli']) {
+    for (const agent of ['codex', 'claude', 'cli', 'hermes', 'openclaw']) {
       bootstrapAgentWorkspace(projectPath, agent, { force: true });
     }
     deps.sendLog('Updated local agent prompts and skills.');
-    return { ok: true, agents: ['codex', 'claude', 'cli'] };
+    return { ok: true, agents: ['codex', 'claude', 'cli', 'hermes', 'openclaw'] };
   }
 
   function normalizeModelName(name) {
@@ -604,6 +620,8 @@ function initMainLogicTools(mainContext) {
     getAgentSkills: templates.getAgentSkills,
     agentsMdTemplate: templates.agentsMdTemplate,
     claudeMdTemplate: templates.claudeMdTemplate,
+        hermesMdTemplate: templates.hermesMdTemplate,
+        openclawMdTemplate: templates.openclawMdTemplate,
     aicadProjectJson: templates.aicadProjectJson,
     modelSourceTemplate: templates.modelSourceTemplate,
     modelParamsTemplate: templates.modelParamsTemplate,
