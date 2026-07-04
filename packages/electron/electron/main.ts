@@ -59,7 +59,9 @@ const {
   sourceFileOptions,
   getAgentSkills,
   agentsMdTemplate,
-  claudeMdTemplate
+  claudeMdTemplate,
+  hermesMdTemplate,
+  openclawMdTemplate
 } = require('./main.templates.index');
 const { EXPORT_RUNNER_PYTHON } = require('./main.templates.export-runner');
 
@@ -646,6 +648,8 @@ function initModuleTools() {
       codexConfigToml,
       agentsMdTemplate,
       claudeMdTemplate,
+      hermesMdTemplate,
+      openclawMdTemplate,
       aicadProjectJson,
       modelSourceTemplate,
       modelParamsTemplate,
@@ -752,7 +756,7 @@ app.whenReady().then(async () => {
   registerIpc();
   terminalManager.init(ipcMain, (type, payload) => sendToRenderer(type, payload), {
     onBeforeTerminalCreate: async ({ agent, projectPath }) => {
-      if (agent === 'codex' || agent === 'claude' || agent === 'cli') {
+      if (agent === 'codex' || agent === 'claude' || agent === 'cli' || agent === 'hermes' || agent === 'openclaw') {
         bootstrapAgentWorkspace(projectPath, agent);
       }
     }
