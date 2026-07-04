@@ -41,6 +41,17 @@ function getAgentSkills(agentHint) {
         '',
         skill.content
       ].join('\n');
+
+    } else if (agentHint === 'Hermes') {
+      relativePath = `.hermes/skills/${name}.md`;
+      let frontmatter = `---\ndescription: "${skill.description}"\nglobs: "${skill.globs}"\n---\n\n`;
+      content = frontmatter + `# ${skill.description.split(':')[0] || name}\n\n` + skill.content;
+      
+    } else if (agentHint === 'OpenClaw') {
+      relativePath = `.openclaw/skills/${name}.md`;
+      let frontmatter = `---\ndescription: "${skill.description}"\nglobs: "${skill.globs}"\n---\n\n`;
+      content = frontmatter + `# ${skill.description.split(':')[0] || name}\n\n` + skill.content;
+
     }
     
     return { relativePath, content };
@@ -95,9 +106,15 @@ function copilotInstructionsTemplate() {
   return combinedMarkdown('GitHub Copilot');
 }
 
+
+function hermesMdTemplate() { return baseMarkdown('Hermes'); }
+function openclawMdTemplate() { return baseMarkdown('OpenClaw'); }
+
 module.exports = {
   getAgentSkills,
   agentsMdTemplate,
   claudeMdTemplate,
+    hermesMdTemplate,
+    openclawMdTemplate,
   copilotInstructionsTemplate
 };
