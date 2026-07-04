@@ -260,7 +260,9 @@ function hasCommand(command) {
 function resolveAgentLaunch(agent) {
   const primary = AGENT_CMDS[agent];
   if (!primary) throw new Error(`Unknown agent: ${agent}`);
-  if (hasCommand(primary)) return { cmd: primary, env: {} };
+  // Compound commands (e.g. "openclaw tui") need only the base executable check.
+  const primaryExecutable = primary.trim().split(/\s+/)[0];
+  if (hasCommand(primaryExecutable)) return { cmd: primary, env: {} };
 
   const fallbackShellCmd = AGENT_FALLBACK_SHELL_CMDS[agent];
   if (!fallbackShellCmd) {
