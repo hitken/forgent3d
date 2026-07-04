@@ -26,6 +26,8 @@ const {
   getAgentSkills,
   agentsMdTemplate,
   claudeMdTemplate,
+  hermesMdTemplate,
+  openclawMdTemplate,
   copilotInstructionsTemplate
 } = require('./main.templates.agents');
 
@@ -47,6 +49,8 @@ module.exports = {
   getAgentSkills,
   agentsMdTemplate,
   claudeMdTemplate,
+  hermesMdTemplate,
+  openclawMdTemplate,
   copilotInstructionsTemplate,
   exportRunnerTemplate,
   exportRunnerFilename
